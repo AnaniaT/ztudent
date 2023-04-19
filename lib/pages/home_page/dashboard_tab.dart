@@ -465,7 +465,7 @@ class _DashboardTabState extends State<DashboardTab> {
                         disabledIconColor: Color(0xFF9A9A9F),
                         icon: Icon(
                           Icons.mode_edit,
-                          color: FlutterFlowTheme.of(context).primary,
+                          color: FlutterFlowTheme.of(context).secondary,
                           size: 20,
                         ),
                         onPressed: !widget.user.isEditAllowed

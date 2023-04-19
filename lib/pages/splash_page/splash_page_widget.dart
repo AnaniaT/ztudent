@@ -86,13 +86,9 @@ class _SplashPageWidgetState extends State<SplashPageWidget> {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color(0xff00A99D),
-              Color(0xff0071BC),
-            ],
+          image: DecorationImage(
+            image: AssetImage('assets/images/gradient.png'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Column(
@@ -111,11 +107,14 @@ class _SplashPageWidgetState extends State<SplashPageWidget> {
                   Text(
                     'Ztudent',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: 'Roboto',
-                        color: Color(0xFF2a2a2a),
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.w500),
+                    style: FlutterFlowTheme.of(context).displaySmall.override(
+                          fontFamily: 'Roboto',
+                          letterSpacing: 1.2,
+                          color: Color(0xff1A1A1A),
+                          fontWeight: FontWeight.w500,
+                          lineHeight: 1,
+                          fontSize: 22,
+                        ),
                   )
                 ],
               ),

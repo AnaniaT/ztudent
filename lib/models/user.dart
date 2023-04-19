@@ -6,6 +6,7 @@ class User {
   late String registrationNo;
   late String loginCode;
   bool isEditAllowed = false;
+  bool isScoreboardAllowed = false;
   String? department;
   int eng = 0;
   int math = 0;
@@ -20,6 +21,7 @@ class User {
     registrationNo = userData['registrationNo'];
     loginCode = userData['loginCode'];
     isEditAllowed = userData['control']['isEditAllowed'];
+    isScoreboardAllowed = userData['isScoreboardAllowed'];
 
     department = userData['department'];
     eng = userData['eng'];
@@ -43,6 +45,7 @@ class User {
       "name": name,
       "registrationNo": registrationNo,
       "loginCode": loginCode,
+      "isScoreboardAllowed": isScoreboardAllowed,
       "control": {
         "isEditAllowed": isEditAllowed,
       },

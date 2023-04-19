@@ -43,6 +43,7 @@ dependencies:
   timeago: 3.2.2
   url_launcher: 6.1.5
   lottie: ^2.3.2
+  flutter_native_splash: ^2.2.19
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -55,6 +56,9 @@ dev_dependencies:
 
   flutter_test:
     sdk: flutter
+
+flutter_native_splash:
+  background_image: assets/images/gradient.png
 
 
 flutter_icons:

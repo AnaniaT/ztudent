@@ -49,10 +49,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       isLoading = true;
     });
     final prefs = await SharedPreferences.getInstance();
-    var _user = User.fromJSONString(prefs.getString('user')!);
+    var _user;
 
     try {
-      var res = await dio.post('/refresh', data: {'id': _user.id});
+      var res = await dio.post('/refresh', data: {'id': user.id});
       _user = new User(res.data);
       await prefs.setString('user', _user.toJSONString());
     } catch (e) {
@@ -60,6 +60,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     }
 
     setState(() {
+      user = _user;
       isLoading = false;
     });
   }
@@ -178,7 +179,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 user: this.user,
                                 userUpdater: _updateUser,
                               ),
-                              ScoreboardTab()
+                              ScoreboardTab(
+                                user: this.user,
+                              )
                             ],
                           ),
                         ),
