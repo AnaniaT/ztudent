@@ -29,6 +29,7 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
 
   final deptOptions = ['Medicine', 'Engineering', 'Veternary', 'Others'];
   bool isDeptSelected = false;
+  int deptStuCount = 0;
 
   String? errMsg;
 
@@ -63,6 +64,7 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
         textFieldPsychController.text =
             '${res.data[0]['avgPsych'].round()} (${res.data[0]['stdDevPsych'].round()})';
 
+        deptStuCount = res.data[0]['count'];
         isDeptSelected = true;
       });
   }
@@ -156,7 +158,15 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
                       endIndent: 50.0,
                       color: FlutterFlowTheme.of(context).dropdownBgColor,
                     ),
-                    if (isDeptSelected)
+                    if (isDeptSelected) ...[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+                        child: Text(
+                          '$deptStuCount student(s) interested in this department',
+                          style: FlutterFlowTheme.of(context).labelLarge,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                       Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(7.0, 0.0, 7.0, 0.0),
@@ -371,7 +381,7 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
                           ],
                         ),
                       )
-                    else
+                    ] else
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
                             10.0, 15.0, 10.0, 10.0),
