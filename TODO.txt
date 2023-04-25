@@ -1,4 +1,7 @@
     4/20/2023
-centralize global variables
+centralize global variables --done
 adjust the logincode issue
 look into the splashscreen warning
+
+    4/25/2023
+make the deptOptions list dynamic and centeralized

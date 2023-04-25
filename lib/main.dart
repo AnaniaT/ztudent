@@ -1,13 +1,18 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'env.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'flutter_flow/nav/nav.dart';
 
 void main() async {
+  // Environment variable load
+  await dotenv.load(fileName: Environment.fileName);
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await FlutterFlowTheme.initialize();

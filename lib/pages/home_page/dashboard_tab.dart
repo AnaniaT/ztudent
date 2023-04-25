@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ztudent/env.dart';
 
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -24,9 +25,7 @@ class DashboardTab extends StatefulWidget {
 class _DashboardTabState extends State<DashboardTab> {
   late bool isEditMode = false;
 
-  final Dio dio = new Dio(BaseOptions(baseUrl: 'http://10.17.250.251:8080'));
-
-  final deptOptions = ['Medicine', 'Engineering', 'Veternary', 'Others'];
+  final Dio dio = new Dio(BaseOptions(baseUrl: Environment.baseURL));
 
   TextEditingController textFieldEngController = TextEditingController();
   TextEditingController textFieldMathController = TextEditingController();
@@ -76,7 +75,7 @@ class _DashboardTabState extends State<DashboardTab> {
     final gradeRegX = RegExp(r'^(?:[1-9]|[1-9][0-9]|100)$');
 
     return q.every((val) => gradeRegX.hasMatch(val)) &&
-        deptOptions.contains(dropdownController.value);
+        widget.user.deptList.contains(dropdownController.value);
   }
 
   void submitHandler(BuildContext ctx) async {
@@ -421,7 +420,7 @@ class _DashboardTabState extends State<DashboardTab> {
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 5.0, 0.0),
                     child: FlutterFlowDropDown<String>(
                       controller: dropdownController,
-                      options: deptOptions,
+                      options: widget.user.deptList,
                       onChanged: (value) {},
                       width: 180.0,
                       height: 40.0,

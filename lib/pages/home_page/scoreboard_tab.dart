@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:ztudent/env.dart';
 import 'package:ztudent/models/user.dart';
 
 import '/flutter_flow/flutter_flow_drop_down.dart';
@@ -25,9 +26,8 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
   FormFieldController<String> dropdownController =
       FormFieldController<String>(null);
 
-  final Dio dio = new Dio(BaseOptions(baseUrl: 'http://10.17.250.251:8080'));
+  final Dio dio = new Dio(BaseOptions(baseUrl: Environment.baseURL));
 
-  final deptOptions = ['Medicine', 'Engineering', 'Veternary', 'Others'];
   bool isDeptSelected = false;
   int deptStuCount = 0;
 
@@ -125,7 +125,7 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
                                 0.0, 0.0, 5.0, 0.0),
                             child: FlutterFlowDropDown<String>(
                               controller: dropdownController,
-                              options: deptOptions,
+                              options: widget.user.deptList,
                               onChanged: (val) => deptSelectionHandler(val),
                               width: 180.0,
                               height: 40.0,

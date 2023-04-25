@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
+import '../../env.dart';
 import '../../flutter_flow/flutter_flow_icon_button.dart';
 import '../../flutter_flow/flutter_flow_theme.dart';
 import '../../models/user.dart';
@@ -16,7 +17,7 @@ class SplashPageWidget extends StatefulWidget {
 }
 
 class _SplashPageWidgetState extends State<SplashPageWidget> {
-  final Dio dio = new Dio(BaseOptions(baseUrl: 'http://10.17.250.251:8080'));
+  final Dio dio = new Dio(BaseOptions(baseUrl: Environment.baseURL));
 
   void _setApp() async {
     final prefs = await SharedPreferences.getInstance();

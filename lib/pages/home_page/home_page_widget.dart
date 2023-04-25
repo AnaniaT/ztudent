@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ztudent/env.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
 // import '/flutter_flow/flutter_flow_util.dart';
@@ -24,7 +25,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
 
-  final Dio dio = new Dio(BaseOptions(baseUrl: 'http://10.17.250.251:8080'));
+  final Dio dio = new Dio(BaseOptions(baseUrl: Environment.baseURL));
 
   late User user;
   void _updateUser(User u) => setState(() {

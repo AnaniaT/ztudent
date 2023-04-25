@@ -8,6 +8,7 @@ class User {
   bool isEditAllowed = false;
   bool isScoreboardAllowed = false;
   String? department;
+  List<String> deptList = [];
   int eng = 0;
   int math = 0;
   int phy = 0;
@@ -21,6 +22,7 @@ class User {
     registrationNo = userData['registrationNo'];
     loginCode = userData['loginCode'];
     isEditAllowed = userData['control']['isEditAllowed'];
+    deptList = userData['control']['deptList'];
     isScoreboardAllowed = userData['isScoreboardAllowed'];
 
     department = userData['department'];
@@ -48,6 +50,7 @@ class User {
       "isScoreboardAllowed": isScoreboardAllowed,
       "control": {
         "isEditAllowed": isEditAllowed,
+        "deptList": deptList,
       },
       "department": department,
       "eng": eng,

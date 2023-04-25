@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../env.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -60,7 +61,7 @@ class _IndexPageWidgetState extends State<IndexPageWidget> {
       return;
     }
 
-    final Dio dio = new Dio(BaseOptions(baseUrl: 'http://10.17.250.251:8080'));
+    final Dio dio = new Dio(BaseOptions(baseUrl: Environment.baseURL));
 
     var res;
     try {
