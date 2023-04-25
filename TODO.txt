@@ -1,0 +1,4 @@
+    4/20/2023
+centralize global variables
+adjust the logincode issue
+look into the splashscreen warning
