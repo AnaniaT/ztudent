@@ -22,7 +22,7 @@ class User {
     registrationNo = userData['registrationNo'];
     loginCode = userData['loginCode'];
     isEditAllowed = userData['control']['isEditAllowed'];
-    deptList = userData['control']['deptList'];
+    deptList = new List<String>.from(userData['control']['deptList']);
     isScoreboardAllowed = userData['isScoreboardAllowed'];
 
     department = userData['department'];
