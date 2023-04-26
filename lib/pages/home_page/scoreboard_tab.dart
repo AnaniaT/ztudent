@@ -29,13 +29,17 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
   final Dio dio = new Dio(BaseOptions(baseUrl: Environment.baseURL));
 
   bool isDeptSelected = false;
+  bool isLoading = false;
   int deptStuCount = 0;
 
   String? errMsg;
 
   void deptSelectionHandler(String? department) async {
     if (department == null) return;
-
+    setState(() {
+      isLoading = true;
+    });
+    await Future.delayed(Duration(seconds: 1));
     var res;
     try {
       res =
@@ -47,6 +51,7 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
     if (res.data.length == 0)
       setState(() {
         isDeptSelected = false;
+        isLoading = false;
         errMsg = 'No students have chosen this department';
       });
     else
@@ -66,6 +71,7 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
 
         deptStuCount = res.data[0]['count'];
         isDeptSelected = true;
+        isLoading = false;
       });
   }
 
@@ -158,7 +164,7 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
                       endIndent: 50.0,
                       color: FlutterFlowTheme.of(context).dropdownBgColor,
                     ),
-                    if (isDeptSelected) ...[
+                    if (isDeptSelected && !isLoading) ...[
                       Padding(
                         padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
                         child: Text(
@@ -386,11 +392,14 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
                         padding: EdgeInsetsDirectional.fromSTEB(
                             10.0, 15.0, 10.0, 10.0),
                         child: Text(
-                          errMsg ?? 'You haven\'t selected any departmet yet.',
+                          isLoading
+                              ? 'Loading department data...'
+                              : errMsg ??
+                                  'You haven\'t selected any departmet yet.',
                           style: FlutterFlowTheme.of(context).labelLarge,
                           textAlign: TextAlign.center,
                         ),
-                      ),
+                      )
                   ],
       ),
     );

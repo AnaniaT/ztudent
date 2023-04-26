@@ -52,7 +52,7 @@ class _IndexPageWidgetState extends State<IndexPageWidget> {
     setState(() {
       isLoading = true;
     });
-    await Future.delayed(Duration(seconds: 2));
+
     if (loginCode.isEmpty) {
       setState(() {
         errMsg = 'Empty login code';

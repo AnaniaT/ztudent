@@ -22,8 +22,6 @@ class _SplashPageWidgetState extends State<SplashPageWidget> {
   void _setApp() async {
     final prefs = await SharedPreferences.getInstance();
 
-    await Future.delayed(Duration(seconds: 1));
-
     String? storedData = prefs.getString('user');
 
     if (storedData == null)
