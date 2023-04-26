@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ztudent/env.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -66,6 +67,29 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     });
   }
 
+  _onBackPressed() {
+    showDialog<bool>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text('Warning'),
+        content: Text('You\'re about to exit. Are you sure?'),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              SystemChannels.platform
+                  .invokeMethod('SystemNavigator.pop'); // kill app
+            },
+            child: Text('Yes'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(c, false),
+            child: Text('No'),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -81,116 +105,128 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).primary,
-          automaticallyImplyLeading: false,
-          title: Text(
-            'Ztudent',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Poppins',
-                  color: FlutterFlowTheme.of(context).primaryBackground,
-                  fontSize: 22.0,
-                ),
-          ),
-          actions: [
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15, 0, 15, 0),
-              child: InkWell(
-                onTap: this.refresh,
-                child: Icon(
-                  Icons.refresh_rounded,
-                  color: FlutterFlowTheme.of(context).primaryBackground,
-                  size: 28,
+    return WillPopScope(
+      onWillPop: () async {
+        bool? result = await _onBackPressed();
+        if (result == null) {
+          result = false;
+        }
+        return result;
+      },
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+        child: Scaffold(
+          key: scaffoldKey,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          appBar: AppBar(
+            backgroundColor: FlutterFlowTheme.of(context).primary,
+            automaticallyImplyLeading: false,
+            title: Text(
+              'Ztudent',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                    fontFamily: 'Poppins',
+                    color: FlutterFlowTheme.of(context).primaryBackground,
+                    fontSize: 22.0,
+                  ),
+            ),
+            actions: [
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(15, 0, 15, 0),
+                child: InkWell(
+                  onTap: this.refresh,
+                  child: Icon(
+                    Icons.refresh_rounded,
+                    color: FlutterFlowTheme.of(context).primaryBackground,
+                    size: 28,
+                  ),
                 ),
               ),
-            ),
-          ],
-          centerTitle: false,
-          elevation: 2.0,
-        ),
-        body: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              if (isLoading)
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional(0, 0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
-                          child: Lottie.network(
-                            'https://assets2.lottiefiles.com/packages/lf20_aZTdD5.json',
-                            width: 150,
-                            height: 130,
-                            fit: BoxFit.contain,
-                            animate: true,
+            ],
+            centerTitle: false,
+            elevation: 2.0,
+          ),
+          body: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                if (isLoading)
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional(0, 0),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
+                            child: Lottie.network(
+                              'https://assets2.lottiefiles.com/packages/lf20_aZTdD5.json',
+                              width: 150,
+                              height: 130,
+                              fit: BoxFit.contain,
+                              animate: true,
+                            ),
                           ),
                         ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(-0.05, 0),
-                        child: Text(
-                          'Loading...',
-                          style: FlutterFlowTheme.of(context).bodyMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              else
-                Expanded(
-                  child: DefaultTabController(
-                    length: 2,
-                    initialIndex: 0,
-                    child: Column(
-                      children: [
-                        TabBar(
-                          labelColor: FlutterFlowTheme.of(context).primary,
-                          unselectedLabelColor:
-                              FlutterFlowTheme.of(context).secondary,
-                          labelStyle:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 14.0,
-                                    letterSpacing: 1.2,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                          indicatorColor: FlutterFlowTheme.of(context).primary,
-                          tabs: [
-                            Tab(
-                              text: 'Dashboard',
-                            ),
-                            Tab(
-                              text: 'Scoreboard',
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: TabBarView(
-                            children: [
-                              DashboardTab(
-                                user: this.user,
-                                userUpdater: _updateUser,
-                              ),
-                              ScoreboardTab(
-                                user: this.user,
-                              )
-                            ],
+                        Align(
+                          alignment: AlignmentDirectional(-0.05, 0),
+                          child: Text(
+                            'Loading...',
+                            style: FlutterFlowTheme.of(context).bodyMedium,
                           ),
                         ),
                       ],
                     ),
+                  )
+                else
+                  Expanded(
+                    child: DefaultTabController(
+                      length: 2,
+                      initialIndex: 0,
+                      child: Column(
+                        children: [
+                          TabBar(
+                            labelColor: FlutterFlowTheme.of(context).primary,
+                            unselectedLabelColor:
+                                FlutterFlowTheme.of(context).secondary,
+                            labelStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14.0,
+                                  letterSpacing: 1.2,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                            indicatorColor:
+                                FlutterFlowTheme.of(context).primary,
+                            tabs: [
+                              Tab(
+                                text: 'Dashboard',
+                              ),
+                              Tab(
+                                text: 'Scoreboard',
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              children: [
+                                DashboardTab(
+                                  user: this.user,
+                                  userUpdater: _updateUser,
+                                ),
+                                ScoreboardTab(
+                                  user: this.user,
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
