@@ -101,7 +101,7 @@ class _SplashPageWidgetState extends State<SplashPageWidget> {
                 children: [
                   Image.asset(
                     'assets/images/app_launcher_icon.png',
-                    height: 100,
+                    height: 95,
                   ),
                   Text(
                     'Ztudent',
@@ -112,7 +112,17 @@ class _SplashPageWidgetState extends State<SplashPageWidget> {
                           color: Color(0xff1A1A1A),
                           fontWeight: FontWeight.w500,
                           lineHeight: 1,
-                          fontSize: 22,
+                          fontSize: 20,
+                        ),
+                  ),
+                  Text(
+                    // 'Make informed decisions to shape your future',
+                    'by Anania Temtim',
+                    textAlign: TextAlign.center,
+                    style: FlutterFlowTheme.of(context).displaySmall.override(
+                          fontFamily: 'Roboto',
+                          color: Color(0xff1A1A1A),
+                          fontSize: 12,
                         ),
                   )
                 ],
