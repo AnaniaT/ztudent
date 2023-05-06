@@ -146,86 +146,93 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             elevation: 2.0,
           ),
           body: SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                if (isLoading)
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Align(
-                          alignment: AlignmentDirectional(0, 0),
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
-                            child: Lottie.network(
-                              'https://assets2.lottiefiles.com/packages/lf20_aZTdD5.json',
-                              width: 150,
-                              height: 130,
-                              fit: BoxFit.contain,
-                              animate: true,
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: AlignmentDirectional(-0.05, 0),
-                          child: Text(
-                            'Loading...',
-                            style: FlutterFlowTheme.of(context).bodyMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                else
-                  Expanded(
-                    child: DefaultTabController(
-                      length: 2,
-                      initialIndex: 0,
-                      child: Column(
-                        children: [
-                          TabBar(
-                            labelColor: FlutterFlowTheme.of(context).primary,
-                            unselectedLabelColor:
-                                FlutterFlowTheme.of(context).secondary,
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 14.0,
-                                  letterSpacing: 1.2,
-                                  fontWeight: FontWeight.w500,
+            child: Center(
+              child: SizedBox(
+                width: 412,
+                height: double.maxFinite,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    if (isLoading)
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0, 0),
+                              child: Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
+                                child: Lottie.network(
+                                  'https://assets2.lottiefiles.com/packages/lf20_aZTdD5.json',
+                                  width: 150,
+                                  height: 130,
+                                  fit: BoxFit.contain,
+                                  animate: true,
                                 ),
-                            indicatorColor:
-                                FlutterFlowTheme.of(context).primary,
-                            tabs: [
-                              Tab(
-                                text: 'Dashboard',
                               ),
-                              Tab(
-                                text: 'Scoreboard',
+                            ),
+                            Align(
+                              alignment: AlignmentDirectional(-0.05, 0),
+                              child: Text(
+                                'Loading...',
+                                style: FlutterFlowTheme.of(context).bodyMedium,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    else
+                      Expanded(
+                        child: DefaultTabController(
+                          length: 2,
+                          initialIndex: 0,
+                          child: Column(
+                            children: [
+                              TabBar(
+                                labelColor:
+                                    FlutterFlowTheme.of(context).primary,
+                                unselectedLabelColor:
+                                    FlutterFlowTheme.of(context).secondary,
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14.0,
+                                      letterSpacing: 1.2,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                indicatorColor:
+                                    FlutterFlowTheme.of(context).primary,
+                                tabs: [
+                                  Tab(
+                                    text: 'Dashboard',
+                                  ),
+                                  Tab(
+                                    text: 'Scoreboard',
+                                  ),
+                                ],
+                              ),
+                              Expanded(
+                                child: TabBarView(
+                                  children: [
+                                    DashboardTab(
+                                      user: this.user,
+                                      userUpdater: _updateUser,
+                                    ),
+                                    ScoreboardTab(
+                                      user: this.user,
+                                    )
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                          Expanded(
-                            child: TabBarView(
-                              children: [
-                                DashboardTab(
-                                  user: this.user,
-                                  userUpdater: _updateUser,
-                                ),
-                                ScoreboardTab(
-                                  user: this.user,
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-              ],
+                  ],
+                ),
+              ),
             ),
           ),
         ),

@@ -75,15 +75,16 @@ class _IndexPageWidgetState extends State<IndexPageWidget> {
       isLoading = false;
       ctx.goNamed('HomePage');
     } catch (e) {
-      if (res.statusCode == 400)
-        setState(() {
+      if (res != null) if (res.statusCode == 400)
+        return setState(() {
           errMsg = 'Invalid login code';
+          isLoading = false;
         });
-      else
-        setState(() {
-          errMsg = 'Something went wrong. Check your internet.';
-        });
-      isLoading = false;
+
+      setState(() {
+        errMsg = 'Something went wrong. Check your internet.';
+        isLoading = false;
+      });
       print('===Err=== ' + e.toString());
       return;
     }
@@ -114,6 +115,8 @@ class _IndexPageWidgetState extends State<IndexPageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    isLoading = this.isLoading;
+    errMsg = this.errMsg;
     return WillPopScope(
       onWillPop: () async {
         bool? result = await _onBackPressed();
@@ -144,103 +147,114 @@ class _IndexPageWidgetState extends State<IndexPageWidget> {
             elevation: 7.0,
           ),
           body: SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 70.0, 0.0, 0.0),
-                  child: Text(
-                    'Ztudent',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).displaySmall.override(
-                          fontFamily: 'Poppins',
-                          letterSpacing: 1.5,
-                          lineHeight: 2.2,
-                        ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 5.0, 20.0, 5.0),
-                  child: TextFormField(
-                    onChanged: (value) {
-                      loginCode = value;
-                    },
-                    controller: TextEditingController(text: loginCode),
-                    textCapitalization: TextCapitalization.words,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      labelText: 'Login code',
-                      errorText: errMsg,
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
+            child: Center(
+              child: SizedBox(
+                width: 412,
+                height: double.maxFinite,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 70.0, 0.0, 0.0),
+                      child: Text(
+                        'Ztudent',
+                        textAlign: TextAlign.start,
+                        style:
+                            FlutterFlowTheme.of(context).displaySmall.override(
+                                  fontFamily: 'Poppins',
+                                  letterSpacing: 1.5,
+                                  lineHeight: 2.2,
+                                ),
                       ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      errorBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      focusedErrorBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      filled: true,
                     ),
-                    style: FlutterFlowTheme.of(context).bodySmall,
-                  ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
-                    child: FFButtonWidget(
-                      onPressed: !isLoading
-                          ? () async {
-                              submitData(context);
-                            }
-                          : null,
-                      text: !isLoading ? 'Submit' : 'loading...',
-                      options: FFButtonOptions(
-                        disabledColor: FlutterFlowTheme.of(context).accent3,
-                        width: 130.0,
-                        height: 40.0,
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(20.0, 5.0, 20.0, 5.0),
+                      child: TextFormField(
+                        onChanged: (value) {
+                          loginCode = value;
+                        },
+                        controller: TextEditingController(text: loginCode),
+                        textCapitalization: TextCapitalization.words,
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          labelText: 'Login code',
+                          errorText: errMsg,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedErrorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          filled: true,
+                        ),
+                        style: FlutterFlowTheme.of(context).bodySmall,
+                      ),
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional(0.0, 0.0),
+                      child: Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: FlutterFlowTheme.of(context).primary,
-                        textStyle:
-                            FlutterFlowTheme.of(context).titleSmall.override(
+                            EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
+                        child: FFButtonWidget(
+                          onPressed: !isLoading
+                              ? () async {
+                                  submitData(context);
+                                }
+                              : null,
+                          text: !isLoading ? 'Submit' : 'loading...',
+                          options: FFButtonOptions(
+                            disabledColor: FlutterFlowTheme.of(context).accent3,
+                            width: 130.0,
+                            height: 40.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            color: FlutterFlowTheme.of(context).primary,
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
                                   fontFamily: 'Poppins',
                                   color: Colors.white,
                                 ),
-                        elevation: 5.0,
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                          width: 1.0,
+                            elevation: 5.0,
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
