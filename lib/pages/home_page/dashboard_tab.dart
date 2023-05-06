@@ -195,8 +195,7 @@ class _DashboardTabState extends State<DashboardTab> {
                 ),
                 if (!isEditMode)
                   Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0, 10.0, 25.0, 10.0),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0.0, 25.0, 0.0),
                     child: FFButtonWidget(
                       text: 'Edit',
                       options: FFButtonOptions(
