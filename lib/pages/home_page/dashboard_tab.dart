@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ztudent/env.dart';
 
+import '../../flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -182,17 +183,81 @@ class _DashboardTabState extends State<DashboardTab> {
             ),
             Row(
               mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(25.0, 10.0, 10.0, 10.0),
-                    child: Text(
-                      'Your Grade (out of 100)',
-                      style: FlutterFlowTheme.of(context).titleSmall,
-                    ),
+                Padding(
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(25.0, 15.0, 10.0, 15.0),
+                  child: Text(
+                    'Your Grade (out of 100)',
+                    style: FlutterFlowTheme.of(context).titleSmall,
                   ),
                 ),
+                if (!isEditMode)
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0, 10.0, 25.0, 10.0),
+                    child: FFButtonWidget(
+                      text: 'Edit',
+                      options: FFButtonOptions(
+                        color: FlutterFlowTheme.of(context).secondary,
+                        textStyle:
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.white,
+                                ),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      onPressed: !widget.user.isEditAllowed
+                          ? null
+                          : () {
+                              setState(() {
+                                isEditMode = true;
+                              });
+                            },
+                    ),
+                  )
+                else
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30,
+                          borderWidth: 1,
+                          buttonSize: 50,
+                          icon: Icon(
+                            Icons.check_circle,
+                            color: FlutterFlowTheme.of(context).success,
+                            size: 20,
+                          ),
+                          onPressed: () => submitHandler(context),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 7, 0),
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30,
+                          borderWidth: 1,
+                          buttonSize: 50,
+                          icon: Icon(
+                            Icons.cancel_sharp,
+                            color: FlutterFlowTheme.of(context).error,
+                            size: 20,
+                          ),
+                          onPressed: cancelHandler,
+                        ),
+                      ),
+                    ],
+                  ),
               ],
             ),
             Padding(
@@ -444,79 +509,6 @@ class _DashboardTabState extends State<DashboardTab> {
                       isSearchable: false,
                     ),
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (!isEditMode) ...[
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                      child: FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30,
-                        borderWidth: 1,
-                        buttonSize: 50,
-                        disabledIconColor: Color(0xFF9A9A9F),
-                        icon: Icon(
-                          Icons.mode_edit,
-                          color: FlutterFlowTheme.of(context).secondary,
-                          size: 20,
-                        ),
-                        onPressed: !widget.user.isEditAllowed
-                            ? null
-                            : () {
-                                setState(() {
-                                  isEditMode = true;
-                                });
-                              },
-                      ),
-                    ),
-                    if (!widget.user.isEditAllowed)
-                      Text(
-                        'Editing is not permited yet.',
-                        style: FlutterFlowTheme.of(context).bodySmall.override(
-                              fontFamily: 'Poppins',
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              fontStyle: FontStyle.italic,
-                            ),
-                      ),
-                  ] else ...[
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                      child: FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30,
-                        borderWidth: 1,
-                        buttonSize: 50,
-                        icon: Icon(
-                          Icons.cancel_sharp,
-                          color: FlutterFlowTheme.of(context).error,
-                          size: 20,
-                        ),
-                        onPressed: cancelHandler,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                      child: FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30,
-                        borderWidth: 1,
-                        buttonSize: 50,
-                        icon: Icon(
-                          Icons.check_circle,
-                          color: FlutterFlowTheme.of(context).success,
-                          size: 20,
-                        ),
-                        onPressed: () => submitHandler(context),
-                      ),
-                    ),
-                  ]
                 ],
               ),
             ),
