@@ -5,3 +5,8 @@ look into the splashscreen warning
 
     4/25/2023
 make the deptOptions list dynamic and centeralized --done
+
+    5/6/2023
+set up jwt since you are deploying on the web localstorage needs 'encryption'
+but make sure the token is set on environment variable. --suspended
+instead of the above I used encrypted storage so that data isnot stored in plain text. --done

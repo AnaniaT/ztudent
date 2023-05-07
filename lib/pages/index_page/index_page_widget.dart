@@ -1,3 +1,4 @@
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -5,13 +6,10 @@ import '../../env.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:provider/provider.dart';
 import 'index_page_model.dart';
 export 'index_page_model.dart';
 
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/user.dart';
 
@@ -69,9 +67,15 @@ class _IndexPageWidgetState extends State<IndexPageWidget> {
       res = await dio.post('/logincode', data: {'loginCode': loginCode});
       this.user = new User(res.data);
 
-      final prefs = await SharedPreferences.getInstance();
+      final eprefs = EncryptedSharedPreferences();
 
-      await prefs.setString('user', this.user!.toJSONString());
+      var success = await eprefs.setString('user', this.user!.toJSONString());
+      if (!success) {
+        return setState(() {
+          errMsg = 'Something went wrong during login. Try again.';
+          isLoading = false;
+        });
+      }
       isLoading = false;
       ctx.goNamed('HomePage');
     } catch (e) {
@@ -82,7 +86,7 @@ class _IndexPageWidgetState extends State<IndexPageWidget> {
         });
 
       setState(() {
-        errMsg = 'Something went wrong. Check your internet.';
+        errMsg = 'Couldn\'t establish stable connection. Check your Internet.';
         isLoading = false;
       });
       print('===Err=== ' + e.toString());

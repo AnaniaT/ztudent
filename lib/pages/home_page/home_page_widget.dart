@@ -1,13 +1,10 @@
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ztudent/env.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
-// import '/flutter_flow/flutter_flow_util.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:provider/provider.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lottie/lottie.dart';
 import 'package:dio/dio.dart';
 
@@ -36,12 +33,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   late bool isLoading = true;
 
   void _fetchData() async {
-    final prefs = await SharedPreferences.getInstance();
+    final eprefs = EncryptedSharedPreferences();
 
-    // await Future.delayed(Duration(seconds: 2));
+    String _u = await eprefs.getString('user');
 
     setState(() {
-      user = User.fromJSONString(prefs.getString('user')!);
+      user = User.fromJSONString(_u);
       isLoading = false;
     });
   }
@@ -50,21 +47,32 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     setState(() {
       isLoading = true;
     });
-    final prefs = await SharedPreferences.getInstance();
+    final eprefs = EncryptedSharedPreferences();
     var _user;
 
     try {
       var res = await dio.post('/refresh', data: {'id': user.id});
       _user = new User(res.data);
-      await prefs.setString('user', _user.toJSONString());
+      var success = await eprefs.setString('user', _user.toJSONString());
+      if (!success)
+        return snackbarErr(
+            context, 'Something went wrong during refresh. Try again.');
     } catch (e) {
       print("==== Error homePage ====" + e.toString());
+      return snackbarErr(context,
+          'Couldn\'t establish stable connection. Check your Internet.');
     }
 
     setState(() {
       user = _user;
       isLoading = false;
     });
+  }
+
+  void snackbarErr(BuildContext context, String errText) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errText)),
+    );
   }
 
   _onBackPressed() {

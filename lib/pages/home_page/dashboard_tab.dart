@@ -1,3 +1,4 @@
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:ztudent/env.dart';
 
@@ -9,7 +10,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/user.dart';
 
@@ -79,12 +79,14 @@ class _DashboardTabState extends State<DashboardTab> {
         widget.user.deptList.contains(dropdownController.value);
   }
 
+  void snackbarMsg(BuildContext context, String msgText) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(msgText)));
+  }
+
   void submitHandler(BuildContext ctx) async {
     if (!_isFormValid()) {
-      ScaffoldMessenger.of(ctx).showSnackBar(
-        SnackBar(content: Text('Invalid input. Please check.')),
-      );
-      return;
+      return snackbarMsg(ctx, 'Invalid input. Please check.');
     }
 
     ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
@@ -105,24 +107,23 @@ class _DashboardTabState extends State<DashboardTab> {
       });
 
       var _user = User(res.data);
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('user', _user.toJSONString());
+      final eprefs = EncryptedSharedPreferences();
+
+      var success = await eprefs.setString('user', _user.toJSONString());
+      if (!success)
+        return snackbarMsg(
+            context, 'Something went wrong during update. Try again later.');
 
       isEditMode = false; // No setState b/c eventually userUpdater calls it
       widget.userUpdater(_user);
 
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      ScaffoldMessenger.of(ctx).showSnackBar(
-        SnackBar(content: Text('Success')),
-      );
+      snackbarMsg(context, "Successfully done.");
     } catch (e) {
       print("==== Error dashboardTab ====" + e.toString());
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      ScaffoldMessenger.of(ctx).showSnackBar(
-        SnackBar(
-          content: Text('Something happened during update. Please try again'),
-        ),
-      );
+      snackbarMsg(context,
+          'Couldn\'t establish stable connection. Check your Internet.');
     }
   }
 

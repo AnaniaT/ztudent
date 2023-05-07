@@ -1,6 +1,6 @@
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
 import '../../env.dart';
@@ -20,11 +20,11 @@ class _SplashPageWidgetState extends State<SplashPageWidget> {
   final Dio dio = new Dio(BaseOptions(baseUrl: Environment.baseURL));
 
   void _setApp() async {
-    final prefs = await SharedPreferences.getInstance();
+    final eprefs = EncryptedSharedPreferences();
 
-    String? storedData = prefs.getString('user');
+    String? storedData = await eprefs.getString('user');
 
-    if (storedData == null)
+    if (storedData == null || storedData == '')
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const IndexPageWidget()),
@@ -36,39 +36,46 @@ class _SplashPageWidgetState extends State<SplashPageWidget> {
         res = await dio
             .post('/logincode', data: {'loginCode': idleUser.loginCode});
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            duration: const Duration(days: 1),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('Network error couldn\'t log you in'),
-                FlutterFlowIconButton(
-                  borderColor: Colors.transparent,
-                  borderRadius: 30,
-                  borderWidth: 1,
-                  buttonSize: 40,
-                  icon: Icon(
-                    Icons.refresh_rounded,
-                    color: FlutterFlowTheme.of(context).error,
-                    size: 20,
-                  ),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    _setApp();
-                  },
-                )
-              ],
-            )));
-        return;
+        return snackbarErr(context, 'Network error couldn\'t log you in');
       }
       idleUser = new User(res.data);
 
-      await prefs.setString('user', idleUser.toJSONString());
+      var success = await eprefs.setString('user', idleUser.toJSONString());
+      if (!success) {
+        return snackbarErr(
+            context, 'Something went wrong. Please try again later.');
+      }
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomePageWidget()),
       );
     }
+  }
+
+  void snackbarErr(BuildContext context, String errText) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(days: 1),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(errText),
+            FlutterFlowIconButton(
+              borderColor: Colors.transparent,
+              borderRadius: 30,
+              borderWidth: 1,
+              buttonSize: 40,
+              icon: Icon(
+                Icons.refresh_rounded,
+                color: FlutterFlowTheme.of(context).error,
+                size: 20,
+              ),
+              onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                _setApp();
+              },
+            )
+          ],
+        )));
   }
 
   @override
