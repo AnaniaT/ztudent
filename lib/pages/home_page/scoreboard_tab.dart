@@ -109,6 +109,7 @@ class _ScoreboardTabState extends State<ScoreboardTab> {
                       child: Text(
                         'Select a department to view the average grades of students interested in the department.',
                         style: FlutterFlowTheme.of(context).labelLarge,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     Padding(
